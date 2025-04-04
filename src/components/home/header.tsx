@@ -7,7 +7,7 @@ export default function HomeHeader() {
   const isHidingBrand = useIsHideBrand();
   return (
     <div className="flex items-center justify-center gap-2">
-      {!isHidingBrand && <AppLogo size="mini" height={32} width={32} />}
+      {/* {!isHidingBrand && <AppLogo size="mini" height={32} width={32} />} */}
       <h1 className="text-2xl font-bold">{t("header.title")}</h1>
     </div>
   );

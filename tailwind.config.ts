@@ -4,45 +4,44 @@ import animate from "tailwindcss-animate";
 import type { PluginAPI } from "tailwindcss/types/config";
 
 // Enhance scrollbar style, small size and smooth color
-const scrollbar = ({ addBase, theme }: PluginAPI) => {
+const scrollbar = ({ addBase }: PluginAPI) => {
   addBase({
     // Light mode scrollbar style
     "::-webkit-scrollbar": {
-      width: "4px",
-      height: "4px",
+      width: "8px",
+      height: "8px",
     },
     "::-webkit-scrollbar-track": {
-      backgroundColor: theme("colors.gray.100", "#f1f1f1"),
-      borderRadius: "4px",
-      width: "4px",
+      background: "transparent",
     },
     "::-webkit-scrollbar-thumb": {
-      backgroundColor: theme("colors.gray.300", "#888"),
-      borderRadius: "4px",
+      background: "rgba(0, 0, 0, 0.2)",
+      borderRadius: "100px",
+      border: "2px solid transparent",
+      backgroundClip: "padding-box",
     },
     "::-webkit-scrollbar-thumb:hover": {
-      backgroundColor: theme("colors.gray.400", "#555"),
+      background: "rgba(0, 0, 0, 0.3)",
+    },
+    // Firefox scrollbar style
+    "*": {
+      scrollbarWidth: "thin",
+      scrollbarColor: "rgba(0, 0, 0, 0.2) transparent",
     },
     // Dark mode scrollbar style
-    ".dark ::-webkit-scrollbar": {
-      width: "4px",
-      height: "4px",
-    },
-    ".dark ::-webkit-scrollbar-track": {
-      backgroundColor: theme("colors.gray.800", "#2d2d2d"),
-      borderRadius: "4px",
-      width: "4px",
-    },
     ".dark ::-webkit-scrollbar-thumb": {
-      backgroundColor: theme("colors.gray.600", "#555"),
-      borderRadius: "4px",
+      background: "rgba(255, 255, 255, 0.2)",
+      border: "2px solid transparent",
+      backgroundClip: "padding-box",
     },
     ".dark ::-webkit-scrollbar-thumb:hover": {
-      backgroundColor: theme("colors.gray.700", "#333"),
+      background: "rgba(255, 255, 255, 0.3)",
+    },
+    ".dark *": {
+      scrollbarColor: "rgba(255, 255, 255, 0.2) transparent",
     },
   });
 };
-
 const config: Config = {
   darkMode: ["class"],
   content: [

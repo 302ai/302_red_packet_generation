@@ -32,7 +32,7 @@ export default function AppLogo({
     >
       {size === "mini" ? (
         <Image
-          alt="ai-302"
+          alt="ai"
           priority
           className={cn(className)}
           src="/images/global/logo-mini.png"
@@ -43,7 +43,7 @@ export default function AppLogo({
       ) : (
         <>
           <Image
-            alt="ai-302"
+            alt="ai"
             priority
             className={cn("hidden dark:block", className)}
             src="/images/global/logo-dark.png"
@@ -53,7 +53,7 @@ export default function AppLogo({
           />
 
           <Image
-            alt="ai-302"
+            alt="ai"
             priority
             className={cn("dark:hidden", className)}
             src="/images/global/logo-light.png"

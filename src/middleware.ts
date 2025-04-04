@@ -3,56 +3,79 @@ import { NextRequest, NextResponse } from "next/server";
 import { GLOBAL } from "./constants";
 import { routing } from "./i18n/routing";
 import { normalizeLanguageCode } from "./utils/language";
+import { env } from "@/env";
 
 const handleI18nRouting = createMiddleware(routing);
 
+function setApiKeyToCookie(response: NextResponse, apiKey: string | null) {
+  if (!apiKey) return;
+  response.cookies.set("api-key", apiKey, {
+    httpOnly: false,
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+  });
+}
 // Handle URL lang parameter redirection
 function handleLangParam(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
-  const langParam = searchParams.get("lang");
+  const url = request.nextUrl;
+  const langParam = url.searchParams.get("lang");
 
-  if (!langParam) {
-    return null;
-  }
+  if (!langParam) return null;
 
   const normalizedLang = normalizeLanguageCode(langParam);
-  if (!GLOBAL.LOCALE.SUPPORTED.includes(normalizedLang)) {
-    return null;
-  }
+  if (!GLOBAL.LOCALE.SUPPORTED.includes(normalizedLang)) return null;
 
-  const newUrl = new URL(request.url);
-  searchParams.delete("lang");
+  url.searchParams.delete("lang");
 
-  let newPathname = pathname;
-  if (pathname === "/") {
-    newPathname = `/${normalizedLang}`;
-  } else if (!pathname.startsWith(`/${normalizedLang}`)) {
+  const search = `?${url.searchParams.toString()}`;
+
+  if (url.pathname === "/") {
+    url.pathname = `/${normalizedLang}`;
+  } else if (!url.pathname.startsWith(`/${normalizedLang}`)) {
     const localeRegex = new RegExp(`^/(${GLOBAL.LOCALE.SUPPORTED.join("|")})`);
-    if (localeRegex.test(pathname)) {
-      newPathname = pathname.replace(localeRegex, `/${normalizedLang}`);
+    if (localeRegex.test(url.pathname)) {
+      url.pathname = url.pathname.replace(localeRegex, `/${normalizedLang}`);
     } else {
-      newPathname = `/${normalizedLang}${pathname}`;
+      url.pathname = `/${normalizedLang}${url.pathname}`;
     }
   }
 
-  newUrl.pathname = newPathname;
-  newUrl.search = searchParams.toString();
-  return NextResponse.redirect(newUrl);
+  const baseUrl = request.nextUrl.origin;
+  return NextResponse.redirect(`${baseUrl}${url.pathname}${search}`);
 }
 
-export default function middleware(request: NextRequest) {
-  // First handle lang parameter if present
-  const langRedirect = handleLangParam(request);
-  if (langRedirect) return langRedirect;
+const getApiKey = (request: NextRequest) =>
+  request.nextUrl.searchParams.get("token") ||
+  request.headers.get("x-api-key") ||
+  request.cookies.get("api-key")?.value ||
+  env.NEXT_PUBLIC_302_API_KEY;
 
-  // Then handle regular i18n routing
+export default function middleware(request: NextRequest) {
+  const apiKey = getApiKey(request);
+
+  const response = NextResponse.next();
+  setApiKeyToCookie(response, apiKey!);
+
+  const langRedirect = handleLangParam(request);
+  if (langRedirect) {
+    setApiKeyToCookie(langRedirect, apiKey!);
+    return langRedirect;
+  }
+
   const shouldHandle =
     request.nextUrl.pathname === "/" ||
-    new RegExp(`^/(${GLOBAL.LOCALE.SUPPORTED.join("|")})(/.*)?$`).test(
+    new RegExp(`^/(${GLOBAL.LOCALE.SUPPORTED.join("|")})`).test(
       request.nextUrl.pathname
     );
 
-  if (!shouldHandle) return;
+  if (!shouldHandle) return response;
 
-  return handleI18nRouting(request);
+  const i18nResponse = handleI18nRouting(request);
+  if (i18nResponse) {
+    setApiKeyToCookie(i18nResponse, apiKey!);
+    return i18nResponse;
+  }
+
+  return response;
 }

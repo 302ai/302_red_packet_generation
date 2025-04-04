@@ -31,8 +31,8 @@ export async function generateMetadata(
 
   // Get SEO data for the current language, using optional chaining and nullish coalescing
   const currentSEO = SEO_DATA.languages?.[locale] ?? {
-    title: "302 AI TOOL",
-    description: "This is a tool for 302 AI",
+    title: "EFFI AI TOOL",
+    description: "This is a tool for EFFI AI",
     image: "/default-image.jpg",
   };
 

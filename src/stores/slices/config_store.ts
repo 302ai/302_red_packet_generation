@@ -13,17 +13,32 @@ type ConfigState = {
   shareCode?: string;
   // Whether to hide the brand.
   hideBrand?: boolean;
+  region?: string;
 };
 
+function getApiKeyFromCookie() {
+  if (typeof window === "undefined") return null;
+
+  const cookies = document.cookie.split(";");
+  const apiKeyCookie = cookies.find((cookie) =>
+    cookie.trim().startsWith("api-key=")
+  );
+  return apiKeyCookie ? apiKeyCookie.split("=")[1].trim() : null;
+}
+
+const defaultApiKey =
+  typeof window !== "undefined"
+    ? getApiKeyFromCookie() || env.NEXT_PUBLIC_302_API_KEY
+    : env.NEXT_PUBLIC_302_API_KEY;
 export const appConfigAtom = atomWithStorage<ConfigState>(
   "appConfig",
   {
-    toolInfo: "",
-    apiKey: env.NEXT_PUBLIC_302_API_KEY,
+    apiKey: defaultApiKey,
     modelName: env.NEXT_PUBLIC_DEFAULT_MODEL_NAME,
     isChina: env.NEXT_PUBLIC_IS_CHINA,
     shareCode: "",
     hideBrand: env.NEXT_PUBLIC_HIDE_BRAND,
+    region: "1",
   },
   createJSONStorage(() =>
     typeof window !== "undefined"

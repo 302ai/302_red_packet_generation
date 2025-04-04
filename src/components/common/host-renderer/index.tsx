@@ -5,12 +5,12 @@ type Props = {
   replace?: string;
 };
 
-const HostRenderer = ({ content, replace = "302.AI" }: Props) => {
+const HostRenderer = ({ content, replace = "" }: Props) => {
   const domain = useDomain();
   const urlPattern = /(https?:\/\/[^\s]+)/g;
   return (
     <>
-      {content.split(" ").map((word, index) => (
+      {content?.split(" ").map((word, index) => (
         <span key={index}>
           {urlPattern.test(word) || word === replace ? (
             <a

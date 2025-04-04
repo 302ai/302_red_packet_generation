@@ -11,12 +11,12 @@
   },
   "global": {
     "error": {
-      "code_invalid": "Invalid sharing code. For more information, visit 302.AI",
+      "code_invalid": "Invalid sharing code. ",
       "copy_failed": "Copy failed",
       "network_error": "Network service error, please check the network status or try again later!",
       "not_found": "Page does not exist",
-      "tool_deleted": "This tool has been deleted, please visit <site>302.AI</site> for more information",
-      "tool_disabled": "This tool has been disabled, please visit <site>302.AI</site> for more information",
+      "tool_deleted": "This tool has been deleted ",
+      "tool_disabled": "This tool has been disabled",
       "unknown_error": "An unknown error occurred, please contact customer service"
     },
     "footer": {
