@@ -2,14 +2,14 @@
 
 <p align="center">使用AI生成红包封面图或封面视频，裁剪成合适尺寸并可预览红包效果。</p>
 
-<p align="center"><a href="https://302.ai/tools/rpcg/" target="blank"><img src="https://file.302.ai/gpt/imgs/github/20250102/72a57c4263944b73bf521830878ae39a.png" /></a></p >
+<p align="center"><a href="https://302.ai/product/detail/52" target="blank"><img src="https://file.302.ai/gpt/imgs/github/20250102/72a57c4263944b73bf521830878ae39a.png" /></a></p >
 
 <p align="center"><a href="README_zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
 
 
 ![](docs/302_AI_Red_Pocket_Cover_Generation.png)
 
-来自[302.AI](https://302.ai)的[AI红包封面生成](https://302.ai/tools/rpcg/)的开源版本。你可以直接登录302.AI，零代码零配置使用在线版本。或者对本项目根据自己的需求进行修改，传入302.AI的API KEY，自行部署。
+来自[302.AI](https://302.ai)的[AI红包封面生成](https://302.ai/product/detail/52)的开源版本。你可以直接登录302.AI，零代码零配置使用在线版本。或者对本项目根据自己的需求进行修改，传入302.AI的API KEY，自行部署。
 
 ## 界面预览
 根据输入的描述，生成红包封面图或封面视频，并可预览红包效果  
